@@ -94,13 +94,13 @@
         <button onclick="appendToDisplay('.')">.</button>
         <button onclick="appendToDisplay('^')">xⁿ</button>
         <button onclick="appendToDisplay('÷')">÷</button>
-        <button onclick="appendToDisplay('√(')">√( )</button>
+        <button onclick="applySquareRoot()">√</button>
         <button onclick="clearDisplay()">C</button>
         <button onclick="calculateResult()">=</button>
     </div>
 
     <footer>
-        <p><strong>©2025, Néstor</strong></p>
+        <p>©2025, Néstor</p>
     </footer>
 
     <script>
@@ -118,22 +118,23 @@
             display.innerText = "0";
         }
 
-        function calculateExpression(){
-       try {
-        let exp = expression.replace(/×/g, '*').replace(/÷/g, '/');
-        // Para √ se puede transformar '√(' en 'Math.sqrt(' y para ^ se puede hacer lo que corresponda.
-        exp = exp.replace(/√\(/g, 'Math.sqrt(');
-        // La potencia (^) se debe procesar: se puede implementar una función o usar una librería de evaluación.
-        // Aquí se usa una solución simplificada, reemplazando por Math.pow si se define un patrón adecuado.
-        // Por simplicidad, usaremos eval(), aunque en producción convenga usar un parser más seguro.
-        let result = eval(exp);
-        document.getElementById('display').innerText = result;
-        expression = result.toString();
-      } catch (error) {
-        document.getElementById('display').innerText = "Error";
-        expression = "";
-      }
-    }
+        function applySquareRoot() {
+            let expression = display.innerText;
+            let number = parseFloat(expression); // Convierte la entrada en un número
+
+            if (!isNaN(number)) {
+                display.innerText = Math.sqrt(number);
+            } else {
+                display.innerText = "Error";
+            }
+        }
+
+        function calculateResult() {
+            try {
+                let expression = display.innerText
+                    .replace(/×/g, '*')
+                    .replace(/÷/g, '/')
+                    .replace(/\^/g, '**');
 
                 display.innerText = eval(expression);
             } catch (e) {
@@ -142,4 +143,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
