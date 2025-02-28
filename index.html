@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora Web</title>
+  <style>
+    /* Estilos básicos para la disposición */
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #menu { margin-bottom: 20px; }
+    #menu button { margin-right: 10px; padding: 10px 15px; }
+    #calculator, #areaPerimeter { border: 1px solid #ccc; padding: 20px; border-radius: 5px; }
+    #display { width: 100%; height: 40px; background: #eee; margin-bottom: 10px; text-align: right; padding: 5px; font-size: 18px; }
+    .btn { width: 60px; height: 40px; margin: 5px; font-size: 16px; }
+    .input-field { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- Menú para cambiar entre módulos -->
+  <div id="menu">
+    <button onclick="showCalculator()">Calculadora</button>
+    <button onclick="showAreaPerimeter()">Calcular P.A.</button>
+  </div>
+
+  <!-- Módulo de la Calculadora -->
+  <div id="calculator">
+    <div id="display">0</div>
+    <div id="buttons">
+      <!-- Fila de botones numéricos y operaciones básicas -->
+      <button class="btn" onclick="appendValue('7')">7</button>
+      <button class="btn" onclick="appendValue('8')">8</button>
+      <button class="btn" onclick="appendValue('9')">9</button>
+      <button class="btn" onclick="appendValue('+')">+</button>
+      <br>
+      <button class="btn" onclick="appendValue('4')">4</button>
+      <button class="btn" onclick="appendValue('5')">5</button>
+      <button class="btn" onclick="appendValue('6')">6</button>
+      <button class="btn" onclick="appendValue('-')">−</button>
+      <br>
+      <button class="btn" onclick="appendValue('1')">1</button>
+      <button class="btn" onclick="appendValue('2')">2</button>
+      <button class="btn" onclick="appendValue('3')">3</button>
+      <button class="btn" onclick="appendValue('×')">×</button>
+      <br>
+      <button class="btn" onclick="appendValue('0')">0</button>
+      <button class="btn" onclick="appendValue('.')">.</button>
+      <button class="btn" onclick="clearDisplay()">C</button>
+      <button class="btn" onclick="appendValue('÷')">÷</button>
+      <br>
+      <!-- Botones para operaciones especiales -->
+      <button class="btn" onclick="appendValue('√(')">√( )</button>
+      <button class="btn" onclick="appendValue('(')"> ( </button>
+      <button class="btn" onclick="appendValue(')')"> ) </button>
+      <button class="btn" onclick="appendValue('^')">^</button>
+      <!-- Se pueden agregar botones adicionales como [n1], (n1) y {n1} según la funcionalidad que se desee -->
+      <br>
+      <button class="btn" style="width: 250px;" onclick="calculateExpression()">=</button>
+    </div>
+  </div>
+
+  <!-- Módulo de Cálculo de Área y Perímetro -->
+  <div id="areaPerimeter" style="display: none;">
+    <h2>Calcular Área y Perímetro</h2>
+    <div class="input-field">
+      <label for="figure">Figura:</label>
+      <input type="text" id="figure" placeholder="Ej: rectángulo, cuadrado">
+    </div>
+    <div class="input-field">
+      <label for="base">Base:</label>
+      <input type="number" id="base" placeholder="Ej: 12">
+    </div>
+    <div class="input-field" id="altura-field">
+      <label for="height">Altura:</label>
+      <input type="number" id="height" placeholder="Ej: 19">
+    </div>
+    <div class="input-field">
+      <label for="operationType">Tipo de operación:</label>
+      <select id="operationType">
+        <option value="area">Área</option>
+        <option value="perimeter">Perímetro</option>
+      </select>
+    </div>
+    <button onclick="calculateAreaPerimeter()">Calcular</button>
+    <div id="result" style="margin-top: 15px; font-size: 18px;"></div>
+  </div>
+
+  <script>
+    // Funciones para mostrar y ocultar secciones
+    function showCalculator(){
+      document.getElementById('calculator').style.display = 'block';
+      document.getElementById('areaPerimeter').style.display = 'none';
+    }
+    function showAreaPerimeter(){
+      document.getElementById('calculator').style.display = 'none';
+      document.getElementById('areaPerimeter').style.display = 'block';
+    }
+
+    // Funciones de la Calculadora
+    let expression = "";
+    function appendValue(val){
+      // Se evita que se pueda modificar mediante teclado; solo se usan botones
+      expression += val;
+      document.getElementById('display').innerText = expression;
+    }
+    function clearDisplay(){
+      expression = "";
+      document.getElementById('display').innerText = "0";
+    }
+    function calculateExpression(){
+      // En este ejemplo, se realiza una conversión simple; en un caso real se deberá
+      // implementar un parser que reconozca los símbolos (×, ÷, √, etc.) y los transforme en operaciones de JavaScript.
+      try {
+        let exp = expression.replace(/×/g, '*').replace(/÷/g, '/');
+        // Para √ se puede transformar '√(' en 'Math.sqrt(' y para ^ se puede hacer lo que corresponda.
+        exp = exp.replace(/√\(/g, 'Math.sqrt(');
+        // La potencia (^) se debe procesar: se puede implementar una función o usar una librería de evaluación.
+        // Aquí se usa una solución simplificada, reemplazando por Math.pow si se define un patrón adecuado.
+        // Por simplicidad, usaremos eval(), aunque en producción convenga usar un parser más seguro.
+        let result = eval(exp);
+        document.getElementById('display').innerText = result;
+        expression = result.toString();
+      } catch (error) {
+        document.getElementById('display').innerText = "Error";
+        expression = "";
+      }
+    }
+
+    // Función para calcular Área o Perímetro
+    function calculateAreaPerimeter(){
+      const figure = document.getElementById('figure').value.toLowerCase().trim();
+      const base = parseFloat(document.getElementById('base').value);
+      let height = parseFloat(document.getElementById('height').value);
+      const operation = document.getElementById('operationType').value;
+      let result = "";
+      
+      // Para el cuadrado, solo se necesita una medida
+      if(figure === "cuadrado"){
+        height = base; // se asume que ambos lados son iguales
+      }
+      
+      // Se implementa para figuras básicas: rectángulo y cuadrado.
+      if(figure === "rectángulo" || figure === "cuadrado"){
+        if(operation === "area"){
+          result = base * height;
+        } else if(operation === "perimeter") {
+          result = 2 * (base + height);
+        } else {
+          result = "Operación no válida";
+        }
+      } else {
+        result = "Figura no soportada";
+      }
+      
+      document.getElementById('result').innerText = "Resultado: " + result;
+    }
+  </script>
+</body>
+</html>
