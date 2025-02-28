@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Web</title>
+    <title>PEAR Calculadora</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -136,7 +136,7 @@
     </div>
 
     <footer>
-        <p>©2025, Néstor</p>
+        <p><strong>©2025, Néstor</strong></p>
     </footer>
 
     <script>
@@ -175,7 +175,7 @@
             let operation = document.getElementById("operation").value;
             let result;
 
-            if (figure === "cuadrado" || figure === "rectángulo") {
+            if (figure === "cuadrado" || figure === "rectángulo" || figure === "triangulo equilátero") {
                 if (operation === "area") {
                     result = base * height;
                     document.getElementById("pa-result").innerText = "Área: " + result;
@@ -183,8 +183,10 @@
                     result = 2 * (base + height);
                     document.getElementById("pa-result").innerText = "Perímetro: " + result;
                 }
+                if (figure === "cuadrado")
+                    ( base = height)
             } else {
-                document.getElementById("pa-result").innerText = "Figura no válida. Usa cuadrado o rectángulo.";
+                document.getElementById("pa-result").innerText = "Figura no válida. Usa una figura valida.";
             }
         }
     </script>
