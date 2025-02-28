@@ -175,7 +175,10 @@
             let operation = document.getElementById("operation").value;
             let result;
 
-            if (figure === "cuadrado" || figure === "rectángulo" || figure === "triangulo equilátero") {
+            if (figure === "cuadrado" || figure === "rectángulo" || figure === "triangulo equilátero" || figure === "Cuadrado"
+                || figure === "Rectángulo" || figure === "rectangulo" || figure === "Rectangulo" || figure === "Triangulo equilatero"
+               || figure === "Triángulo equilatero" || figure === "Triángulo equilátero" || === "Triángulo Equilatero"
+               || figure === "Triangulo Equilatero" || figure === "Triangulo Equilátero" || === "Triángulo Equilátero") {
                 if (operation === "area") {
                     result = base * height;
                     document.getElementById("pa-result").innerText = "Área: " + result;
@@ -183,8 +186,10 @@
                     result = 2 * (base + height);
                     document.getElementById("pa-result").innerText = "Perímetro: " + result;
                 }
-                if (figure === "cuadrado")
+                if (operation === "area"){
+                    (figure === "cuadrado" base=height)
                     ( base = height)
+                }
             } else {
                 document.getElementById("pa-result").innerText = "Figura no válida. Usa una figura valida.";
             }
